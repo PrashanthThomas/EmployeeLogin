@@ -13,7 +13,6 @@ function Login() {
   const [pwd, setPwd] = useState("");
 
   const doLogin = () => {
-    console.log("Here", userName === "", pwd);
     if (userName === "" || pwd === "") {
       setAlertMsg("User name or password should not be empty");
       return;
@@ -22,6 +21,8 @@ function Login() {
       setAlertMsg("Invalid user name or password");
     } else {
       setAlertMsg("");
+      localStorage.setItem("uName", userName);
+      localStorage.setItem("Isauth", "true");
       navigate("/dashboard/");
     }
   };
