@@ -21,7 +21,9 @@ const ClientTable = () => {
   useEffect(() => {
     getClients();
   }, []);
-
+  if (!localStorage.getItem("isAuth")) {
+    navigate("/");
+  }
   return (
     <div>
       <tbody>

@@ -1,30 +1,37 @@
 import { useState } from "react";
 import CustomAlert from "./CustomAlert";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Login() {
   const navigate = useNavigate();
-  const credentials = {
-    uName: "admin",
-    pwd: "admin",
-  };
   let [alertMsg, setAlertMsg] = useState("");
-  const [userName, setUserName] = useState("");
-  const [pwd, setPwd] = useState("");
+  const [user, setUser] = useState({
+    userName: "",
+    pwd: "",
+  });
 
   const doLogin = () => {
-    if (userName === "" || pwd === "") {
+    if (user.userName === "" || user.pwd === "") {
       setAlertMsg("User name or password should not be empty");
       return;
     }
-    if (!(userName === credentials.uName || pwd === credentials.pwd)) {
-      setAlertMsg("Invalid user name or password");
-    } else {
-      setAlertMsg("");
-      localStorage.setItem("uName", userName);
-      localStorage.setItem("Isauth", "true");
-      navigate("/dashboard/");
-    }
+
+    axios
+      .post("http://localhost:5231/api/Admin/verifyLogin", {
+        userName: user.userName,
+        pwd: user.pwd,
+      })
+      .then((res) => {
+        if (res.data) {
+          localStorage.setItem("uName", res.data.userName);
+          localStorage.setItem("isAuth", "true");
+          navigate("/dashboard/");
+        } else {
+          setAlertMsg("User name or password is invalid");
+        }
+      });
+    setAlertMsg("");
   };
 
   return (
@@ -47,11 +54,11 @@ function Login() {
           type="text"
           className="form-control"
           id="userName"
-          value={userName}
+          value={user.userName}
           placeholder="Enter User Name"
           onChange={(e) => {
             setAlertMsg("");
-            setUserName(e.target.value);
+            setUser({ ...user, userName: e.target.value });
           }}
         />
       </div>
@@ -61,11 +68,11 @@ function Login() {
           type="password"
           className="form-control"
           id="userPassword"
-          value={pwd}
+          value={user.pwd}
           placeholder="Password"
           onChange={(e) => {
             setAlertMsg("");
-            setPwd(e.target.value);
+            setUser({ ...user, pwd: e.target.value });
           }}
         />
       </div>

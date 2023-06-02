@@ -20,9 +20,9 @@ const UserDetails = () => {
       .catch((err) => setErrors(err.message));
   }, []);
   if (!user) return <h1>No such employee</h1>;
-  // if (!localStorage.getItem("isAuth")) {
-  //   navigate("/");
-  // }
+  if (!localStorage.getItem("isAuth")) {
+    navigate("/");
+  }
   if (user) {
     return (
       <div>

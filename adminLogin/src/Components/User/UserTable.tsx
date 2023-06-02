@@ -30,6 +30,9 @@ const UserTable = () => {
       })
       .catch((err) => setErrors(err.message));
   };
+  if (!localStorage.getItem("isAuth")) {
+    navigate("/");
+  }
   return (
     <div>
       <tbody>

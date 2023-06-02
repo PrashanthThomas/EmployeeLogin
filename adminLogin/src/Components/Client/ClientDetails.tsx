@@ -19,9 +19,9 @@ const ClientDetails = () => {
       .catch((err) => setErrors(err.message));
   }, []);
   if (!client) return <h1>No such Client</h1>;
-  // if (!localStorage.getItem("isAuth")) {
-  //   navigate("/");
-  // }
+  if (!localStorage.getItem("isAuth")) {
+    navigate("/");
+  }
   return (
     <div>
       <h1>Client Details Page {id}</h1>
